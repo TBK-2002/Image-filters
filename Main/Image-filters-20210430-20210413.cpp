@@ -1,9 +1,9 @@
 // FCI – Programming 1 – 2022 - Assignment 3
 // Program Name: assignment-3.cpp
-// Last Modification Date: 3/4/2022
+// Last Modification Date: 5/4/2022
 // Author1: Nour El-Din Ahmed Hussein - 20210430 - Group A - s5
-// Author2 Mohanad Hisham El-Tahawy - 20210413 - Group A - s5
-// Teaching Assistant: Hagar
+// Author2: Mohanad Hisham El-Tahawy - 20210413 - Group A - s5
+// Teaching Assistant: Hagar Ali
 // Purpose: Filtering images.
 
 #include <iostream>
