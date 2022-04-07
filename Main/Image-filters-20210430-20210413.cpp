@@ -1,6 +1,6 @@
 // FCI – Programming 1 – 2022 - Assignment 3
 // Program Name: assignment-3.cpp
-// Last Modification Date: 3/4/2022
+// Last Modification Date: 7/4/2022
 // Author1: Nour El-Din Ahmed Hussein - 20210430 - Group A - s5
 // Author2 Mohanad Hisham El-Tahawy - 20210413 - Group A - s5
 // Teaching Assistant: Hagar Ali
@@ -211,7 +211,7 @@ void invert() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             image[i][j] = 255 - image[i][j];
-            //to make white pixel minus any pixel so it inverts if it's negative
+            //to make white pixel minus any pixel so it changes to the opposite number of it , if it's 10 pixels which is dark so it changes to 245 which is light
         }
     }
     saveImage();
@@ -222,12 +222,6 @@ void flipImage() {
     char ans;
     cout << "Enter H to flip Horizontally or V to flip vertically: ";
     cin >> ans;
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++)
-        {
-            image2[i][j] = image[i][j];
-        }
-    }
     switch (ans) {
     case 'V':
         for (int i = 0; i < SIZE; i++) {
@@ -263,12 +257,6 @@ void dnl() {
     char ans;
     cout << "Enter D to darken or L to lighten the photo: ";
     cin >> ans;
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++)
-        {
-            image2[i][j] = image[i][j];
-        }
-    }
     switch (ans) {
     case 'L':
         for (int i = 0; i < SIZE; i++) {
