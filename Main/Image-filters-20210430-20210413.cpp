@@ -226,10 +226,10 @@ void flipImage() {
     case 'V':
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE / 2; j++)
-            {
-                tmp = image[i][j];
-                image[i][j] = image[i][SIZE - 1 - j];
-                image[i][SIZE - 1 - j] = tmp;
+            { //dividing size by two because in one step two moves occur, so to avoid returning back to the initial position
+                tmp = image[i][j]; //saving the original image in temporary variable to avoid losing changes
+                image[i][j] = image[i][SIZE - 1 - j]; //this step means changing the initial column to the corresponding one to it on the other side
+                image[i][SIZE - 1 - j] = tmp; //returning back the temporary value to the new image
             }
         }
         break;
@@ -241,7 +241,7 @@ void flipImage() {
                 image[i][j] = image[SIZE - 1 - i][j];
                 image[SIZE - 1 - i][j] = tmp;
             }
-        }
+        }//same as veticall instead working on rows not columns
         break;
 
     default:
@@ -253,7 +253,6 @@ void flipImage() {
 }
 
 void dnl() {
-    //int c = 50;
     char ans;
     cout << "Enter D to darken or L to lighten the photo: ";
     cin >> ans;
