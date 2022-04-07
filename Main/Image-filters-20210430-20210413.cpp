@@ -40,36 +40,31 @@ int main() {
             << "s- Save the image to a file" << endl
             << "0- Exit" << endl;
         cin >> input;
+        loadImage();
         switch (input)
         {
         case '1':
-            loadImage();
             bnw();
             break;
 
         case '2':
-            loadImage();
             invert();
             break;
 
         case '3':
-            loadImage();
             loadImage2();
             merge();
             break;
 
         case '4':
-            loadImage();
             flipImage();
             break;
 
         case '5':
-            loadImage();
             rotate();
             break;
 
         case '6':
-            loadImage();
             dnl();
             break;
 
@@ -81,6 +76,7 @@ int main() {
             cout << "Sorry, invalid input" << endl;
             break;
         }
+        saveImage();
     }
     return 0;
 }
@@ -140,14 +136,13 @@ void bnw() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (image[i][j] > 128) {
-                image[i][j] = 255;
+                image[i][j] = 255; // If the pixel is dark make it black.
             }
             else {
-                image[i][j] = 0;
+                image[i][j] = 0; // If not then its light to make it white.
             }
         }
     }
-    saveImage();
 }
 
 void merge() {
@@ -157,7 +152,6 @@ void merge() {
             image[i][j] = image2[i][j];
         }
     }
-    saveImage();
 }
 
 void rotate() {
@@ -176,7 +170,7 @@ void rotate() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++)
             {
-                image[j][255 - i] = image2[i][j];
+                image[j][255 - i] = image2[i][j]; // Rows and columns swaps and the new columns shift by 265 which is the SIZE.
             }
         }
         break;
@@ -185,7 +179,7 @@ void rotate() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++)
             {
-                image[255 - i][255 - j] = image2[i][j];
+                image[255 - i][255 - j] = image2[i][j]; // Rows and columns shift by 256.
             }
         }
         break;
@@ -194,7 +188,7 @@ void rotate() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++)
             {
-                image[255 - j][i] = image2[i][j];
+                image[255 - j][i] = image2[i][j]; // Rows and columns swaps and the new rows shift by 265 which is the SIZE.
             }
         }
         break;
@@ -204,7 +198,6 @@ void rotate() {
         rotate();
         break;
     }
-    saveImage();
 }
 
 void invert() {
@@ -214,7 +207,6 @@ void invert() {
             //to make white pixel minus any pixel so it changes to the opposite number of it , if it's 10 pixels which is dark so it changes to 245 which is light
         }
     }
-    saveImage();
 }
 
 void flipImage() {
@@ -222,6 +214,7 @@ void flipImage() {
     char ans;
     cout << "Enter H to flip Horizontally or V to flip vertically: ";
     cin >> ans;
+    ans = toupper(ans);
     switch (ans) {
     case 'V':
         for (int i = 0; i < SIZE; i++) {
@@ -246,10 +239,9 @@ void flipImage() {
 
     default:
         cout << "Invalid input!\n";
-        rotate();
+        flipImage();
         break;
     }
-    saveImage();
 }
 
 void dnl() {
@@ -283,10 +275,10 @@ void dnl() {
             }
         }
         break;
+        
     default:
         cout << "Invalid input!\n";
-        rotate();
+        dnl();
         break;
     }
-    saveImage();
 }
