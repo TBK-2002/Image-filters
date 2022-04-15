@@ -1,6 +1,6 @@
 // FCI – Programming 1 – 2022 - Assignment 3
 // Program Name: assignment-3.cpp
-// Last Modification Date: 7/4/2022
+// Last Modification Date: 15/4/2022
 // Author1: Nour El-Din Ahmed Hussein - 20210430 - Group A - s5
 // Author2 Mohanad Hisham El-Tahawy - 20210413 - Group A - s5
 // Teaching Assistant: Hagar Ali
@@ -14,11 +14,11 @@
 
 using namespace std;
 
-int size = 256;
+const int size = 256;
 unsigned char image[SIZE][SIZE];
 unsigned char image2[SIZE][SIZE];
 
-void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl();
+void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink();
 
 int main() {
     char input;
@@ -40,6 +40,10 @@ int main() {
             << "s- Save the image to a file" << endl
             << "0- Exit" << endl;
         cin >> input;
+        if(input == '0'){
+            return 0;
+            break;
+        }
         loadImage();
         switch (input)
         {
@@ -68,8 +72,16 @@ int main() {
             dnl();
             break;
 
-        case '0':
-            return 0;
+        case '7':
+            edges();
+            break;
+
+        case '8':
+            
+            break;
+
+        case '9':
+            shrink();
             break;
 
         default:
@@ -279,6 +291,106 @@ void dnl() {
     default:
         cout << "Invalid input!\n";
         dnl();
+        break;
+    }
+}
+
+void edges(){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++)
+        {
+            image2[i][j] = image[i][j];
+        }
+    }
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            if(image[i][j] < 127){
+                image[i][j] = 0;
+                j++;
+                while(image[i][j] < 127){
+                    image[i][j] = 255;
+                    j++;
+                }
+                image[i][j-1] = 0;
+            }
+            else{
+                image[i][j] = 255;
+            }
+        }
+    }
+    for(int j = 0; j < size; j++){
+        for(int i = 0; i < size; i++){
+            if(image2[i][j] < 127){
+                image[i][j] = 0;
+                i++;
+                while(image2[i][j] < 127){
+                    i++;
+                }
+                image[i-1][j] = 0;
+            }
+        }
+    }
+    // for(int i = 0; i < size; i++){
+    //     for(int j = 0; j < size; j++){
+    //         if(abs(image[i][j] - image[i][j+1]) > 48 || abs(image[i][j] - image[i+1][j]) > 48){
+    //             image[i][j] = 0;
+    //         }
+    //         else{
+    //             image[i][j] = 255;
+    //         }
+    //     }
+    // }
+}
+
+void shrink(){
+    char input;
+    cout << "Choose the shrink scale: enter A to shrink it to half, B for one third, C for quarter.\n";
+    cin >> input;
+    input = toupper(input);
+    switch (input)
+    {
+    case 'A':
+        for(int i = 0, c = 0; i < size; i++, c += 2){
+            for(int j = 0, k = 0; j < size; j++, k += 2){
+                if(c < size && k < size){
+                    image[i][j] = image[c][k];
+                }
+                else{
+                    image[i][j] = 255;
+                }
+            }
+        }
+        break;
+
+    case 'B':
+        for(int i = 0, c = 0; i < size; i++, c += 3){
+            for(int j = 0, k = 0; j < size; j++, k += 3){
+                if(c < size && k < size){
+                    image[i][j] = image[c][k];
+                }
+                else{
+                    image[i][j] = 255;
+                }
+            }
+        }
+        break;
+
+    case 'C':
+        for(int i = 0, c = 0; i < size; i++, c += 4){
+            for(int j = 0, k = 0; j < size; j++, k += 4){
+                if(c < size && k < size){
+                    image[i][j] = image[c][k];
+                }
+                else{
+                    image[i][j] = 255;
+                }
+            }
+        }
+        break;
+
+    default:
+        cout << "invalid input!\n";
+        shrink();
         break;
     }
 }
