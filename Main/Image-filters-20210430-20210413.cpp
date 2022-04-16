@@ -18,7 +18,7 @@ const int size = 256;
 unsigned char image[SIZE][SIZE];
 unsigned char image2[SIZE][SIZE];
 
-void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink();
+void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink(), blur();
 
 int main() {
     char input;
@@ -44,6 +44,7 @@ int main() {
             return 0;
             break;
         }
+        input = toupper(input);
         loadImage();
         switch (input)
         {
@@ -84,6 +85,18 @@ int main() {
             shrink();
             break;
 
+        case 'A':
+
+            break;
+
+        case 'B':
+
+            break;
+        
+        case 'C':
+            blur();
+            break;
+
         default:
             cout << "Sorry, invalid input" << endl;
             break;
@@ -102,7 +115,10 @@ void loadImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    readGSBMP(imageFileName, image);
+    int read = readGSBMP(imageFileName, image);
+    if(read == 1){
+        loadImage();
+    }
 }
 
 void loadImage2() {
@@ -114,7 +130,10 @@ void loadImage2() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    readGSBMP(imageFileName, image2);
+    int read = readGSBMP(imageFileName, image2);
+    if(read == 1){
+        loadImage2();
+    }
 }
 
 //_________________________________________
@@ -392,5 +411,25 @@ void shrink(){
         cout << "invalid input!\n";
         shrink();
         break;
+    }
+}
+
+void blur(){
+    int level = 5;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++)
+        {
+            image2[i][j] = image[i][j];
+        }
+    }
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            int avg = 0;
+            for(int k = 1; k < (level+1); k++){
+                avg += image2[i+k][j] + image2[i][j+k] + image2[i-k][j] + image2[i][j-k] + image2[i+k][j+k] + image2[i-k][j-k] + image2[i+k][j-k] + image2[i-k][j+k];
+            }
+            avg = avg / (8 * level);
+            image[i][j] = avg;
+        }
     }
 }
