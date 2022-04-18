@@ -18,7 +18,7 @@ const int size = 256;
 unsigned char image[SIZE][SIZE];
 unsigned char image2[SIZE][SIZE];
 
-void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink(), blur();
+void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink(), blur(),mirrorImage(),enlarge(),shuffle(),quad1(),quad2(),quad3(),quad4();
 
 int main() {
     char input;
@@ -78,7 +78,7 @@ int main() {
             break;
 
         case '8':
-            
+            enlarge();
             break;
 
         case '9':
@@ -86,11 +86,11 @@ int main() {
             break;
 
         case 'A':
-
+            mirrorImage();
             break;
 
         case 'B':
-
+            shuffle();
             break;
         
         case 'C':
@@ -432,4 +432,352 @@ void blur(){
             image[i][j] = avg;
         }
     }
+}
+void mirrorImage(){
+    char ans;
+    cout << "Enter to mirror: L for left or R for right or U for up or D for down " ;
+    cin >> ans;
+    switch(ans){
+        case 'R' :
+            for (int i =0;i < size;i++){
+                for (int j=0;j < size; j++){
+                    image[i][j] = image[i][SIZE - 1 - j];
+                    image[i][SIZE - 1 - j] = image[i][j];
+                }
+            }
+            break;
+
+        case 'D' :
+            for (int i =0;i < size;i++){
+                for (int j=0;j < size; j++){
+                    image[i][j]=image[SIZE - 1 -i][j];
+                    image[SIZE - 1 -i][j] = image[i][j];
+                }
+            }
+            break;
+
+        case 'U' :
+            for (int i =0;i < size;i++){
+                for (int j=0;j < size; j++){
+                    image[SIZE - 1 -i][j] = image[i][j];
+                    image[i][j]=image[SIZE - 1 -i][j];
+                }
+            }
+            break;
+
+        case 'L' :
+            for (int i =0;i < size;i++){
+                for (int j=0;j < size; j++){
+                    image[i][SIZE - 1 - j] = image[i][j];
+                    image[i][j] = image[i][SIZE - 1 - j];
+                }
+            }
+            break;
+
+        default:
+            cout << "invalid input!\n";
+            mirrorImage();
+            break;
+    }
+}
+void enlarge(){
+    int r = 0;
+    int c = 0;
+    unsigned char image2[size][size];
+    char ans;
+    cout << "Enter the quarter you want to enlarge ";
+    cin >> ans;
+
+    for(int i =0;i < size;i++){
+        for(int j =0;j <size;j++){
+            image2[i][j]=image[i][j];
+        }
+    }
+
+
+    switch(ans){
+        case '1':
+            for(int i =0;i < size/2;i++){
+                for(int j=0;j < size/2;j++){
+
+                    image[r][c] = image2[i][j];
+                    image[r][c+1] = image2[i][j];
+                    image[r+1][c] = image2[i][j];
+                    image[r+1][c+1] = image2[i][j];
+                    c+=2;
+                }
+                c=0;
+                r+=2;
+            }
+            break;
+
+        case '2':
+            for(int i =0;i < size/2;i++){
+                for(int j=size/2;j < size;j++){
+
+                    image[r][c] = image2[i][j];
+                    image[r][c+1] = image2[i][j];
+                    image[r+1][c] = image2[i][j];
+                    image[r+1][c+1] = image2[i][j];
+                    c+=2;
+                }
+                c=0;
+                r+=2;
+            }
+            break;
+
+        case '3':
+            for(int i =size/2;i < size;i++){
+                for(int j=0;j < size/2;j++){
+
+                    image[r][c] = image2[i][j];
+                    image[r][c+1] = image2[i][j];
+                    image[r+1][c] = image2[i][j];
+                    image[r+1][c+1] = image2[i][j];
+                    c+=2;
+                }
+                c=0;
+                r+=2;
+            }
+            break;
+
+        case '4':
+            for(int i =size/2;i < size;i++){
+                for(int j=size/2;j < size;j++){
+
+                    image[r][c] = image2[i][j];
+                    image[r][c+1] = image2[i][j];
+                    image[r+1][c] = image2[i][j];
+                    image[r+1][c+1] = image2[i][j];
+                    c+=2;
+                }
+                c=0;
+                r+=2;
+            }
+            break;
+
+    }
+}
+
+void shuffle() {
+/*        unsigned char image1[size][size];
+        unsigned char image2[size][size];
+        unsigned char image3[size][size];
+        unsigned char image4[size][size];*/
+        unsigned char quad1[size][size];
+        unsigned char quad2[size][size];
+        unsigned char quad3[size][size];
+        unsigned char quad4[size][size];
+        char w, x, y, z;
+        int r = 0, c = 0;
+        for (int i = 0; i < size / 2; i++) {
+            for (int j = 0; j < size / 2; j++) {
+                quad1[r][c] = image[i][j];
+                c += 1;
+            }
+            r += 1;
+            c = 0;
+        }
+        r=0,c=0;
+        for (int i = 0; i < size/2; i++) {
+            for (int j = size / 2; j < size; j++) {
+                quad2[r][c] = image[i][j];
+                c += 1;
+            }
+            r += 1;
+            c = 0;
+        }
+        r=0,c=0;
+        for (int i = size / 2; i < size; i++) {
+            for (int j = 0; j < size / 2; j++) {
+                quad3[r][c] = image[i][j];
+                c += 1;
+            }
+            r += 1;
+            c=0;
+        }
+        r=0,c=0;
+        for (int i = size / 2; i < size; i++) {
+            for (int j = size / 2; j < size; j++) {
+                quad4[r][c] = image[i][j];
+                c += 1;
+            }
+            r += 1;
+            c = 0;
+        }
+        cout << "Please enter shuffle order ";
+        cin >> w >> x >> y >> z;
+        r=0,c=0;
+        switch (w) {
+            case '1' :
+                for (int i = 0; i < size / 2; i++) {
+                    for (int j = 0; j < size / 2; j++) {
+                        image[i][j] = quad1[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '2' :
+                for (int i = 0; i < size/2; i++) {
+                    for (int j = 0; j < size/2; j++) {
+                        image[i][j] = quad2[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '3':
+                for (int i = 0; i < size/2; i++) {
+                    for (int j = 0; j < size / 2; j++) {
+                        image[i][j] =quad3[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '4' :
+                for (int i = 0; i < size/2; i++) {
+                    for (int j = 0; j < size/2; j++) {
+                        image[i][j] = quad4[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+        }
+        r=0,c=0;
+        switch (x) {
+            case '1' :
+                for (int i = 0; i < size / 2; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] = quad1[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '2' :
+                for (int i = 0; i < size/2; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] = quad2[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '3':
+                for (int i = 0; i < size/2; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] =quad3[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '4' :
+                for (int i = 0; i < size/2; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] = quad4[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+        }
+        r=0,c=0;
+        switch (y) {
+            case '1' :
+                for (int i = size/2; i < size; i++) {
+                    for (int j = 0; j < size / 2; j++) {
+                        image[i][j] = quad1[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '2' :
+                for (int i = size/2; i < size; i++) {
+                    for (int j = 0; j < size/2; j++) {
+                        image[i][j] = quad2[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '3':
+                for (int i = size/2; i < size; i++) {
+                    for (int j = 0; j < size / 2; j++) {
+                        image[i][j] =quad3[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '4' :
+                for (int i = size/2; i < size; i++) {
+                    for (int j = 0; j < size/2; j++) {
+                        image[i][j] = quad4[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+        }
+        r=0,c=0;
+        switch (z) {
+            case '1' :
+                for (int i = size/2; i < size; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] = quad1[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '2' :
+                for (int i =size/2; i < size; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] = quad2[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '3':
+                for (int i = size/2; i < size; i++) {
+                    for (int j = size/2; j < size ; j++) {
+                        image[i][j] =quad3[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+            case '4' :
+                for (int i = size/2; i < size; i++) {
+                    for (int j = size/2; j < size; j++) {
+                        image[i][j] = quad4[r][c];
+                        c += 1;
+                    }
+                    r += 1;
+                    c = 0;
+                }
+                break;
+        }
+
 }
