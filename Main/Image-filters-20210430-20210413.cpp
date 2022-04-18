@@ -18,7 +18,7 @@ const int size = 256;
 unsigned char image[SIZE][SIZE];
 unsigned char image2[SIZE][SIZE];
 
-void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink(), blur(),mirrorImage(),enlarge(),shuffle(),quad1(),quad2(),quad3(),quad4();
+void loadImage(), loadImage2(), saveImage(), bnw(), merge(), rotate(), invert(), flipImage(), dnl(), edges(), shrink(), blur(),mirrorImage(),enlarge(),shuffle();
 
 int main() {
     char input;
@@ -164,13 +164,20 @@ void saveImage() {
 }
 
 void bnw() {
+    long avg = 0;
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            if (image[i][j] > 128) {
-                image[i][j] = 255; // If the pixel is dark make it black.
+            avg += image[i][j];
+        }
+    }
+    avg /= SIZE * SIZE;
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            if(image[i][j] < avg){
+                image[i][j] = 0;
             }
-            else {
-                image[i][j] = 0; // If not then its light to make it white.
+            else{
+                image[i][j] = 255;
             }
         }
     }
@@ -315,6 +322,7 @@ void dnl() {
 }
 
 void edges(){
+    bnw();
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++)
         {
@@ -323,42 +331,28 @@ void edges(){
     }
     for(int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
-            if(image[i][j] < 127){
-                image[i][j] = 0;
+            if(image[i][j] == 0){
                 j++;
-                while(image[i][j] < 127){
+                while(image[i][j] == 0){
                     image[i][j] = 255;
                     j++;
                 }
                 image[i][j-1] = 0;
             }
-            else{
-                image[i][j] = 255;
-            }
         }
     }
     for(int j = 0; j < size; j++){
         for(int i = 0; i < size; i++){
-            if(image2[i][j] < 127){
+            if(image2[i][j] == 0){
                 image[i][j] = 0;
                 i++;
-                while(image2[i][j] < 127){
+                while(image2[i][j] == 0){
                     i++;
                 }
                 image[i-1][j] = 0;
             }
         }
     }
-    // for(int i = 0; i < size; i++){
-    //     for(int j = 0; j < size; j++){
-    //         if(abs(image[i][j] - image[i][j+1]) > 48 || abs(image[i][j] - image[i+1][j]) > 48){
-    //             image[i][j] = 0;
-    //         }
-    //         else{
-    //             image[i][j] = 255;
-    //         }
-    //     }
-    // }
 }
 
 void shrink(){
@@ -415,7 +409,7 @@ void shrink(){
 }
 
 void blur(){
-    int level = 5;
+    int level = 4;
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++)
         {
@@ -560,10 +554,6 @@ void enlarge(){
 }
 
 void shuffle() {
-/*        unsigned char image1[size][size];
-        unsigned char image2[size][size];
-        unsigned char image3[size][size];
-        unsigned char image4[size][size];*/
         unsigned char quad1[size][size];
         unsigned char quad2[size][size];
         unsigned char quad3[size][size];
@@ -777,6 +767,10 @@ void shuffle() {
                     r += 1;
                     c = 0;
                 }
+                break;
+            default:
+                cout << "invalid input!\n";
+                shuffle();
                 break;
         }
 
