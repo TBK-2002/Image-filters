@@ -1,10 +1,11 @@
 // FCI – Programming 1 – 2022 - Assignment 3
-// Program Name: assignment-3.cpp
-// Last Modification Date: 15/4/2022
+// Program Name: bonus-20210430-20210413.cpp
+// Last Modification Date: 20/4/2022
 // Author1: Nour El-Din Ahmed Hussein - 20210430 - Group A - s5
 // Author2 Mohanad Hisham El-Tahawy - 20210413 - Group A - s5
 // Teaching Assistant: Hagar Ali
-// Purpose: Filtering images.
+// Purpose: Filtering images in RGB.
+// Note: Same algorithms from the gray scale filters used here.
 
 #include <iostream>
 #include <fstream>

@@ -1,5 +1,5 @@
 // FCI – Programming 1 – 2022 - Assignment 3
-// Program Name: assignment-3.cpp
+// Program Name: Image-filters-20210430-20210413.cpp
 // Last Modification Date: 19/4/2022
 // Author1: Nour El-Din Ahmed Hussein - 20210430 - Group A - S5
 // Author2 Mohanad Hisham El-Tahawy - 20210413 - Group A - S5
@@ -173,10 +173,12 @@ void bnw() {
     avg /= SIZE * SIZE;
     for(int i = 0; i < SIZE; i++){
         for(int j = 0; j < SIZE; j++){
-            if(image[i][j] < avg){
+            if(image[i][j] < avg) // If the pixel is darker than the average change it to black.
+            {
                 image[i][j] = 0;
             }
-            else{
+            else // If the pixel is lighter than the average change it to white.
+            {
                 image[i][j] = 255;
             }
         }
@@ -185,9 +187,9 @@ void bnw() {
 
 void merge() {
     for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) // Keep even pixels and change odd ones and invert that in the next row.
+        for (int j = 0; j < SIZE; j++)
         {
-            image[i][j] = (image2[i][j] + image[i][j]) / 2;
+            image[i][j] = (image2[i][j] + image[i][j]) / 2; // Average of the two pixels from the two images.
         }
     }
 }
@@ -322,34 +324,38 @@ void dnl() {
 }
 
 void edges(){
-    bnw();
+    bnw(); // Change the image into black and white image.
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++)
         {
-            image2[i][j] = image[i][j];
+            image2[i][j] = image[i][j]; // Make a copy of the orignal image to avoid losing any pixels.
         }
     }
     for(int i = 0; i < SIZE; i++){
         for(int j = 0; j < SIZE; j++){
-            if(image[i][j] == 0){
+            if(image[i][j] == 0) // Detect the first black pixel in the row.
+            {
                 j++;
-                while(image[i][j] == 0){
-                    image[i][j] = 255;
+                while(image[i][j] == 0) // Keep iterating over the pixels in the same row until black pixels end.
+                {
+                    image[i][j] = 255; // Change all the middle pixels into white.
                     j++;
                 }
-                image[i][j-1] = 0;
+                image[i][j-1] = 0; // Keep the last pixel in the black line as black.
             }
         }
     }
     for(int j = 0; j < SIZE; j++){
         for(int i = 0; i < SIZE; i++){
-            if(image2[i][j] == 0){
-                image[i][j] = 0;
+            if(image2[i][j] == 0) // Detect the first black pixel in the column.
+            {
+                image[i][j] = 0; // If the first pixel in the black line was changed during the previous loop change it to black back.
                 i++;
-                while(image2[i][j] == 0){
-                    i++;
+                while(image2[i][j] == 0)
+                {
+                    i++; // Keep iterating over the pixels in the black line in the original image without changing values in the new image.
                 }
-                image[i-1][j] = 0;
+                image[i-1][j] = 0; // Make the last pixel in the black line black.
             }
         }
     }
@@ -366,10 +372,10 @@ void shrink(){
         for(int i = 0, c = 0; i < SIZE; i++, c += 2){
             for(int j = 0, k = 0; j < SIZE; j++, k += 2){
                 if(c < SIZE && k < SIZE){
-                    image[i][j] = image[c][k];
+                    image[i][j] = image[c][k]; // Take a pixel from every two pixels and put it in the first quad.
                 }
                 else{
-                    image[i][j] = 255;
+                    image[i][j] = 255; // Make the rest of the picture white.
                 }
             }
         }
@@ -379,7 +385,7 @@ void shrink(){
         for(int i = 0, c = 0; i < SIZE; i++, c += 3){
             for(int j = 0, k = 0; j < SIZE; j++, k += 3){
                 if(c < SIZE && k < SIZE){
-                    image[i][j] = image[c][k];
+                    image[i][j] = image[c][k]; // Take a pixel from every three pixels.
                 }
                 else{
                     image[i][j] = 255;
@@ -409,11 +415,11 @@ void shrink(){
 }
 
 void blur(){
-    int level = 4;
+    int level = 4; // To easily change blur level.
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++)
         {
-            image2[i][j] = image[i][j];
+            image2[i][j] = image[i][j]; // Make a copy of the orignal image to avoid losing any pixels.
         }
     }
     for(int i = 0; i < SIZE; i++){
@@ -421,8 +427,8 @@ void blur(){
             int avg = 0;
             for(int k = 1; k < (level+1); k++){
                 avg += image2[i+k][j] + image2[i][j+k] + image2[i-k][j] + image2[i][j-k] + image2[i+k][j+k] + image2[i-k][j-k] + image2[i+k][j-k] + image2[i-k][j+k];
-            }
-            avg = avg / (8 * level);
+            } // Calculate the average of pixels in the same vertical and horizontal line and diagonal from the pixel.
+            avg = avg / (8 * level); // Calcualate the average until the specified level.
             image[i][j] = avg;
         }
     }
@@ -555,10 +561,11 @@ void enlarge(){
 
 
 void shuffle(){
-    unsigned char quads[4][SIZE/2][SIZE/2];
+    unsigned char quads[4][SIZE/2][SIZE/2]; // Make an array of four small images to store quads form the original image.
 
     for(int i = 0; i < SIZE; i++){
-        for(int j = 0; j < SIZE; j++){
+        for(int j = 0; j < SIZE; j++) // Store the pixels from the original image to quads.
+        {
             int p = image[i][j];
             if(i < 128 && j < 128){
                 quads[0][i][j] = p;
@@ -582,24 +589,29 @@ void shuffle(){
     int inputs[4] = {i1, i2, i3, i4};
     sort(std::begin(inputs), std::end(inputs));
     bool checker = true;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 4; i++) // Checking if the user's numbers are valid.
+    {
         if(check[i] != inputs[i]){
             checker = false;
             break;
         }
     }
-    if(checker){
+    if(checker) // If the users's numbers are valid store the pixels from the quads into the image in the new order.
+    {
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
                 if(i < 128 && j < 128){
-                    image[i][j] = quads[i1-1][i][j];
-                }
+                    image[i][j] = quads[i1-1][i][j]; 
+                } // i1, i2, i3 and i4 are the new order, we use them to decide which quad to take pixels from.
+
                 else if(i < 128 && j > 127){
                     image[i][j] = quads[i2-1][i][j-128];
                 }
+
                 else if(i > 127 && j < 128){
                     image[i][j] = quads[i3-1][i-128][j];
                 }
+
                 else{
                     image[i][j] = quads[i4-1][i-128][j-128];
                 }
