@@ -40,7 +40,6 @@ int main() {
             << "a- Mirror 1/2 Image" << endl
             << "b- Shuffle Image" << endl
             << "c- Blur Image" << endl
-            << "s- Save the image to a file" << endl
             << "0- Exit" << endl;
         cin >> input;
         if(input == '0'){
